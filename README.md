@@ -38,12 +38,7 @@ Scanning and detection are based on a comprehensive judgment of multiple factors
 
 ## 📦 Installation Methods
 
-### Method 1: Via ComfyUI Manager (Recommended)
-1. Open ComfyUI Manager.
-2. Search for "ComfyModelCleaner".
-3. Click Install.
-
-### Method 2: Manual Installation
+### Manual Installation
 1. Navigate to ComfyUI's custom_nodes directory:
    ```bash
    cd ComfyUI/custom_nodes
