@@ -7,18 +7,54 @@ ComfyModelCleaner Nodes - 清理版本
 import sys
 from pathlib import Path
 from server import PromptServer
+import json
+
+from .model_cleaner_server import ModelCleanerMessageHolder
 
 # Initialize I18nManager and set language early
 from .core.i18n import i18n, get_t
 import os
 
-# Attempt to get ComfyUI's language setting
-# This is a common way, but might need adjustment based on ComfyUI's internal config structure
-comfyui_lang = os.environ.get('COMFYUI_LANG', 'en') 
-# A more robust way would be to read ComfyUI's config if available, e.g., via PromptServer or a known config file
-# For now, we use an environment variable or default to 'en'
+# --- 新增的语言检测逻辑 ---
+def get_comfyui_language_setting():
+    default_lang = 'en'
+    
+    # 1. 尝试从 comfy.settings.json 读取
+    try:
+        # 假设 ComfyUI 根目录可以通过 __file__ 向上追溯两层 (custom_nodes -> ComfyUI)
+        # 或者需要更可靠的方式确定根目录
+        comfyui_root_path = Path(__file__).parent.parent.parent 
+        # 如果你的插件在 ComfyUI/custom_nodes/YourPluginName/your_nodes.py
+        # 则 Path(__file__).parent 是 YourPluginName
+        # Path(__file__).parent.parent 是 custom_nodes
+        # Path(__file__).parent.parent.parent 是 ComfyUI
+        
+        settings_file_path = comfyui_root_path / "user" / "default" / "comfy.settings.json"
+        
+        if settings_file_path.exists():
+            with open(settings_file_path, 'r', encoding='utf-8') as f:
+                settings_data = json.load(f)
+                locale_setting = settings_data.get("Comfy.Locale")
+                if locale_setting and isinstance(locale_setting, str):
+                    print(f"ComfyModelCleaner I18n: Language read from comfy.settings.json: {locale_setting}")
+                    # "zh" or "en" etc.
+                    return locale_setting.split('-')[0].lower() # "zh-CN" -> "zh"
+    except Exception as e:
+        print(f"ComfyModelCleaner I18n: Error reading comfy.settings.json: {e}. Falling back.")
+        
+    # 2. 回退到环境变量
+    env_lang = os.environ.get('COMFYUI_LANG')
+    if env_lang:
+        print(f"ComfyModelCleaner I18n: Language from COMFYUI_LANG env var: {env_lang}")
+        return env_lang.split('-')[0].lower()
+        
+    # 3. 默认语言
+    print(f"ComfyModelCleaner I18n: Using default language: {default_lang}")
+    return default_lang
 
-i18n.set_language(comfyui_lang)
+comfyui_final_lang = get_comfyui_language_setting()
+i18n.set_language(comfyui_final_lang)
+# --- 结束新增的语言检测逻辑 ---
 
 # Ensure current directory in Python path
 current_dir = Path(__file__).parent
@@ -344,24 +380,28 @@ class InteractiveModelCleanerNode:
             # 发送数据到前端用于交互
             try:
                 from server import PromptServer
-                print(f"InteractiveModelCleaner: 发送数据到前端，节点ID: {id}")
-                print(f"InteractiveModelCleaner: 模型数量: {len(models_data['models'])}")
+                # print(f"InteractiveModelCleaner: 发送数据到前端，节点ID: {id}")
+                print(get_t("interactive_cleaner.log_send_data", id=id))
+                # print(f"InteractiveModelCleaner: 模型数量: {len(models_data['models'])}")
+                print(get_t("interactive_cleaner.log_model_count", count=len(models_data['models'])))
 
                 data_to_send = {
                     "id": id,
                     "models": models_data['models'],
                     "action_mode": action_mode,
-                    "backup_folder": backup_base_folder
+                    "backup_folder": backup_base_folder,
+                    "lang": i18n.current_language
                 }
 
                 PromptServer.instance.send_sync("interactive-model-cleaner-data", data_to_send)
-                print(f"InteractiveModelCleaner: 数据发送完成")
+                # print(f"InteractiveModelCleaner: 数据发送完成")
+                print(get_t("interactive_cleaner.log_data_sent"))
 
-                # 等待用户选择
-                from .model_cleaner_server import ModelCleanerMessageHolder
-                print(f"InteractiveModelCleaner: 等待用户选择...")
+                # print(f"InteractiveModelCleaner: 等待用户选择...")
+                print(get_t("interactive_cleaner.log_waiting_user_selection"))
                 selected_indices = ModelCleanerMessageHolder.waitForMessage(id, asList=True)
-                print(f"InteractiveModelCleaner: 用户选择了索引: {selected_indices}")
+                # print(f"InteractiveModelCleaner: 用户选择了索引: {selected_indices}")
+                print(get_t("interactive_cleaner.log_user_selected_indices", indices=selected_indices))
 
                 # 处理用户选择的模型
                 cleanup_report = self._process_selected_indices(models_data, selected_indices, action_mode, backup_base_folder)
