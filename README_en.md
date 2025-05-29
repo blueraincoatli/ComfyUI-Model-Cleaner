@@ -1,5 +1,7 @@
 # ComfyModelCleaner
 
+[🇨🇳 中文版说明 | Chinese README](./README.md)
+
 When exploring and using various custom nodes, ComfyUI users often encounter a common pain point: many nodes rely on specific model files. When these nodes are uninstalled or no longer used, the associated model files are often forgotten and left in the local `models` directory, becoming "orphan models." These orphan models not only occupy valuable hard disk space but also make model management chaotic.
 
 **ComfyUI Model Cleaner** aims to solve this problem. It is a utility tool designed for ComfyUI that helps you identify and clean up model files that are no longer in use due to node deprecation or project completion by intelligently analyzing your model library and workflows. This effectively frees up disk space and makes your model management more organized.
