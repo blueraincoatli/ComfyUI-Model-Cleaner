@@ -12,6 +12,10 @@ Scanning and detection are based on a comprehensive judgment of multiple factors
 
 ## 🌟 Main Features
 
+## 📺 Video Demo
+
+[![Watch the video](https://img.youtube.com/vi/KnfGg2_Kj4Y/0.jpg)](https://youtu.be/KnfGg2_Kj4Y)
+
 ### Intelligent Model Analysis (V2.0 Core Feature)
 - 🔍 **Intelligent Model Discovery**: Accurately identifies single-file and directory models.
 - 🔗 **Multi-source Reference Detection**: Extracts references from code, configurations, and documents.
