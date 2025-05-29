@@ -13,7 +13,7 @@ ComfyUI 用户在探索和使用各种自定义节点时，经常会遇到一个
 
 ## 📺 视频演示
 
-[![观看B站视频](https://img.shields.io/badge/观看演示-Bilibili-pink?logo=bilibili)](https://www.bilibili.com/video/BV1iJ7VzZEuM/?share_source=copy_web&vd_source=cf252df9434f0f23bd33f05fb8039d18)
+[![B站演示](https://private-user-images.githubusercontent.com/142435478/448755945-b8702c4f-30b9-4639-80af-352d60f0c5cd.jpg)](https://www.bilibili.com/video/BV1iJ7VzZEuM/?share_source=copy_web&vd_source=cf252df9434f0f23bd33f05fb8039d18)
 
 ### 智能模型分析 (V2.0 核心特性)
 - 🔍 **智能模型发现**: 精确识别单文件和目录模型。
