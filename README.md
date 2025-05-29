@@ -1,291 +1,292 @@
 # ComfyModelCleaner
 
-[English README](./README_en.md)
+[🇨🇳 中文版说明 | Chinese README](./README_zh.md)
 
-ComfyUI 用户在探索和使用各种自定义节点时，经常会遇到一个普遍的痛点：许多节点依赖特定的模型文件，当这些节点被卸载或不再使用后，相关的模型文件却往往被遗忘，滞留在本地的 `models` 目录中，成为"孤儿模型"。这些孤儿模型不仅占用了宝贵的硬盘空间，也使得模型管理变得混乱。
+When exploring and using various custom nodes, ComfyUI users often encounter a common pain point: many nodes rely on specific model files. When these nodes are uninstalled or no longer used, the associated model files are often forgotten and left in the local `models` directory, becoming "orphan models." These orphan models not only occupy valuable hard disk space but also make model management chaotic.
 
-**ComfyUI Model Cleaner** 旨在解决这一问题。它是一个为 ComfyUI 设计的实用工具，通过智能分析您的模型库和工作流，帮助您识别并清理那些由于节点弃用或项目完成而不再使用的模型文件，从而有效释放磁盘空间，让您的模型管理更加有序。
+**ComfyUI Model Cleaner** aims to solve this problem. It is a utility tool designed for ComfyUI that helps you identify and clean up model files that are no longer in use due to node deprecation or project completion by intelligently analyzing your model library and workflows. This effectively frees up disk space and makes your model management more organized.
 
-## 📣 注意
-扫描和检测通过基于多种因素综合判断，因此不能保证非常精确，务必小心谨慎操作。
+## 📣 Notice
 
-## 🌟 主要功能
+Scanning and detection are based on a comprehensive judgment of multiple factors, so accuracy cannot be guaranteed. Please operate with caution.
 
-### 智能模型分析 (V2.0 核心特性)
-- 🔍 **智能模型发现**: 精确识别单文件和目录模型。
-- 🔗 **多源引用检测**: 从代码、配置、文档中提取引用。
-- 🎯 **智能匹配算法**: 多级匹配策略，提高准确性。
-- 📊 **置信度评估**: 0-100分的使用置信度评分。
-- 🌐 **GitHub增强**: 可选的仓库信息分析，从README等文档提取引用。
-- 自动扫描ComfyUI模型目录。
-- 分析工作流和自定义节点的模型使用情况。
-- 🌐 **多语言支持**: 自动检测ComfyUI语言设置 (目前支持中文和英文切换，终端调试信息始终为中文)
+## 🌟 Main Features
 
-### 安全清理
-- 预览模式：查看将要删除的文件，不实际删除
-- 备份模式：将文件移动到备份文件夹，并记录原始路径
-- 回收站模式：将文件发送到系统回收站
+### Intelligent Model Analysis (V2.0 Core Feature)
+- 🔍 **Intelligent Model Discovery**: Accurately identifies single-file and directory models.
+- 🔗 **Multi-source Reference Detection**: Extracts references from code, configurations, and documents.
+- 🎯 **Intelligent Matching Algorithm**: Multi-level matching strategy to improve accuracy.
+- 📊 **Confidence Assessment**: 0-100 point usage confidence score.
+- 🌐 **GitHub Enhancement**: Optional repository information analysis, extracting references from READMEs and other documents.
+- Automatically scans the ComfyUI models directory.
+- Analyzes model usage in workflows and custom nodes.
+- 🌐 **Multi-language Support**: Automatically detects ComfyUI language settings (currently supports Chinese and English, terminal debug information is always in Chinese).
 
-### 用户友好界面
-- 节点内交互式选择界面
-- 详细的扫描报告和统计信息
-- 实时操作进度反馈
+### Safe Cleanup
+- Preview Mode: View files to be deleted without actually deleting them.
+- Backup Mode: Move files to a backup folder and record the original path.
+- Recycle Bin Mode: Send files to the system recycle bin.
 
-## 📦 安装方法
+### User-Friendly Interface
+- Interactive selection interface within the node.
+- Detailed scan reports and statistics.
+- Real-time operation progress feedback.
 
-### 方法一：通过ComfyUI Manager（推荐）
-1. 打开ComfyUI Manager
-2. 搜索"ComfyModelCleaner"
-3. 点击安装
+## 📦 Installation Methods
 
-### 方法二：手动安装
-1. 进入ComfyUI的custom_nodes目录：
+### Method 1: Via ComfyUI Manager (Recommended)
+1. Open ComfyUI Manager.
+2. Search for "ComfyModelCleaner".
+3. Click Install.
+
+### Method 2: Manual Installation
+1. Navigate to ComfyUI's custom_nodes directory:
    ```bash
    cd ComfyUI/custom_nodes
    ```
 
-2. 克隆此仓库：
+2. Clone this repository:
    ```bash
    git clone https://github.com/blueraincoatli/ComfyUI-Model-Cleaner.git
    ```
 
-3. 安装依赖（如果需要）：
+3. Install dependencies (if needed):
    ```bash
    cd ComfyModelCleaner
    pip install send2trash
    ```
 
-4. 重启ComfyUI
+4. Restart ComfyUI.
 
-## 🚀 使用方法
+## 🚀 Usage
 
-### 基本工作流程
+### Basic Workflow
 
-1. **添加模型扫描器节点**
-   - 在ComfyUI中添加"🔍 Model Scanner"节点
+1. **Add Model Scanner Node**
+   - Add the "🔍 Model Scanner" node in ComfyUI.
 
-2. **配置扫描选项**
-   - 选择扫描模式 (详见下方"扫描模式"部分)
-   - 设置置信度阈值 (推荐 60-80%，详见下方"结果解读")
-   - 选择要扫描的模型类型
+2. **Configure Scan Options**
+   - Select scan mode (see "Scan Modes" section below for details).
+   - Set confidence threshold (recommended 60-80%, see "Interpreting Results" below for details).
+   - Select model types to scan.
 
-3. **运行扫描**
-   - 执行工作流开始分析模型
+3. **Run Scan**
+   - Execute the workflow to start model analysis.
 
-4. **查看结果**
-   - 检查扫描报告中的未使用模型
+4. **View Results**
+   - Check the scan report for unused models.
 
-5. **清理模型**
-   - 将扫描器输出连接到"📋 Interactive Model Cleaner"节点
-   - 在节点内选择要删除的模型
-   - 选择清理模式并执行
+5. **Clean Up Models**
+   - Connect the scanner output to the "📋 Interactive Model Cleaner" node.
+   - Select models to delete within the node.
+   - Choose a cleanup mode and execute.
 
-### 节点说明
+### Node Descriptions
 
-#### 🔍 Model Scanner（模型扫描器）
-**功能**：分析模型使用情况
-- 扫描ComfyUI安装目录中的所有模型
-- 分析工作流文件和自定义节点代码
-- 为每个模型生成使用置信度评分
-- 输出详细的分析报告和未使用模型列表
+#### 🔍 Model Scanner
+**Function**: Analyzes model usage.
+- Scans all models in the ComfyUI installation directory.
+- Analyzes workflow files and custom node code.
+- Generates a usage confidence score for each model.
+- Outputs a detailed analysis report and a list of unused models.
 
-**主要参数**：
-- `scan_mode`：扫描模式 (详见下方"扫描模式"部分)
-- `confidence_threshold`：置信度阈值（0-100%）
-- 各种通用模型类型开关（checkpoints、loras等）
-- `include_custom_node_dirs`: 包含自定义节点目录 (V2.0)
-- `github_analysis`: 启用GitHub仓库分析 (V2.0)
-- `exclude_core_dirs`: 排除核心系统目录 (V2.0)
+**Main Parameters**:
+- `scan_mode`: Scan mode (see "Scan Modes" section below for details).
+- `confidence_threshold`: Confidence threshold (0-100%).
+- Switches for various common model types (checkpoints, LoRAs, etc.).
+- `include_custom_node_dirs`: Include custom node directories (V2.0).
+- `github_analysis`: Enable GitHub repository analysis (V2.0).
+- `exclude_core_dirs`: Exclude core system directories (V2.0).
 
-#### 📋 Interactive Model Cleaner（交互式模型清理器）
-**功能**：交互式模型清理
-- 在节点内显示模型选择界面
-- 支持多选模型进行批量操作
-- 提供安全的清理选项
-- 生成详细的操作报告
+#### 📋 Interactive Model Cleaner
+**Function**: Interactive model cleanup.
+- Displays a model selection interface within the node.
+- Supports multi-selection of models for batch operations.
+- Provides safe cleanup options.
+- Generates detailed operation reports.
 
-**主要参数**：
-- `action_mode`：操作模式（dry_run/move_to_backup/move_to_recycle_bin）
-- `backup_base_folder`：备份文件夹路径
+**Main Parameters**:
+- `action_mode`: Operation mode (dry_run/move_to_backup/move_to_recycle_bin).
+- `backup_base_folder`: Backup folder path.
 
-## ⚙️ 配置选项详解
+## ⚙️ Detailed Configuration Options
 
-### 扫描模式 (V2.0 更新)
-- **normal 模式 (正常) ⭐ 推荐**：使用V2.0智能引擎，提供详细的置信度分析，结果更准确。
-- **GitHub Enhanced 模式 (GitHub增强)**：包含节点的GitHub仓库分析，从README等文档提取引用，最全面的分析结果。
+### Scan Modes (V2.0 Update)
+- **normal Mode ⭐ Recommended**: Uses the V2.0 intelligent engine, provides detailed confidence analysis, and more accurate results.
+- **GitHub Enhanced Mode**: Includes analysis of the node's GitHub repository, extracting references from READMEs and other documents for the most comprehensive analysis results.
 
-### 置信度阈值 (V2.0 建议)
-- **80**: 保守 (推荐新手)
-- **70**: 平衡 (推荐日常使用)
-- **50**: 激进 (经验用户)
+### Confidence Threshold (V2.0 Recommendation)
+- **80**: Conservative (recommended for beginners).
+- **70**: Balanced (recommended for daily use).
+- **50**: Aggressive (for experienced users).
 
-### 模型类型
-缺省跳过扫描以下类型的模型：
-- **Checkpoints**：主要的AI模型文件
-- **LoRAs**：低秩适应模型
-- **Embeddings**：文本嵌入模型
-- **VAE**：变分自编码器
-- **ControlNet**：控制网络模型
-- **Upscale Models**：图像放大模型
-- **Style Models**：风格模型
-- **CLIP**：图像-文本理解模型
+### Model Types
+By default, scanning is skipped for the following model types:
+- **Checkpoints**: Main AI model files.
+- **LoRAs**: Low-Rank Adaptation models.
+- **Embeddings**: Text embedding models.
+- **VAE**: Variational Autoencoder models.
+- **ControlNet**: Control Network models.
+- **Upscale Models**: Image upscaling models.
+- **Style Models**: Style transfer models.
+- **CLIP**: Contrastive Language-Image Pre-training models.
 
-### 清理模式
-- **预览模式（Dry Run）**：只显示将要删除的文件，不实际删除
-- **备份模式（Move to Backup）**：将文件移动到备份文件夹，并创建路径记录文件
-- **回收站模式（Move to Recycle Bin）**：将文件发送到系统回收站 (依赖 `send2trash` 库)
+### Cleanup Modes
+- **Dry Run Mode**: Only displays files that would be deleted, without actually deleting them.
+- **Move to Backup Mode**: Moves files to a backup folder and creates a path record file.
+- **Move to Recycle Bin Mode**: Sends files to the system recycle bin (requires the `send2trash` library).
 
-## 📊 结果解读 (V2.0 新增)
+## 📊 Interpreting Results (V2.0 New)
 
-### 未使用置信度等级
-- **80-100%**: 非常高 - 很可能未使用 (可安全删除)
-- **60-79%**: 高 - 可能未使用 (建议验证后删除)
-- **40-59%**: 中等 - 不确定状态 (需要手动验证)
-- **20-39%**: 低 - 可能在使用 (建议保留)
-- **0-19%**: 很低 - 很可能在使用 (建议保留)
+### Unused Confidence Levels
+- **80-100%**: Very High - Very likely unused (safe to delete).
+- **60-79%**: High - Likely unused (recommend verifying before deleting).
+- **40-59%**: Medium - Uncertain status (requires manual verification).
+- **20-39%**: Low - Possibly in use (recommend keeping).
+- **0-19%**: Very Low - Very likely in use (recommend keeping).
 
-### 匹配类型
-- **Exact**: 精确匹配 (最可靠)
-- **Partial**: 部分匹配 (较可靠)
-- **Fuzzy**: 模糊匹配 (需要验证)
-- **Path**: 路径匹配 (需要验证)
+### Match Types
+- **Exact**: Exact match (most reliable).
+- **Partial**: Partial match (fairly reliable).
+- **Fuzzy**: Fuzzy match (requires verification).
+- **Path**: Path match (requires verification).
 
-## 🛡️ 安全特性 (V2.0 强调)
+## 🛡️ Safety Features (V2.0 Emphasis)
 
-### 删除前必读
-1. **备份重要文件**: 删除前务必备份。
-2. **验证结果**: 手动检查低置信度的模型。
-3. **测试工作流**: 删除后测试常用工作流。
-4. **分批处理**: 不要一次删除太多文件。
+### Must-Read Before Deleting
+1. **Backup Important Files**: Always back up before deleting.
+2. **Verify Results**: Manually check low-confidence models.
+3. **Test Workflows**: Test common workflows after deletion.
+4. **Process in Batches**: Do not delete too many files at once.
 
-### 特殊情况
-- **新安装的模型**: 可能还未被引用检测到。
-- **动态加载的模型**: 某些节点可能动态加载模型。
-- **外部引用**: 模型可能被其他工具使用。
+### Special Cases
+- **Newly Installed Models**: May not have been detected by reference scanning yet.
+- **Dynamically Loaded Models**: Some nodes may load models dynamically.
+- **External References**: Models might be used by other tools.
 
-### 置信度评分系统 (原有特性，结合V2.0理解)
-每个模型都会获得一个"未使用置信度"评分，请参考上方的"未使用置信度等级"进行判断。
+### Confidence Scoring System (Original feature, understood in conjunction with V2.0)
+Each model receives an "unused confidence" score. Please refer to the "Unused Confidence Levels" above for interpretation.
 
-### 备份和恢复
-- 自动创建带时间戳的备份文件夹
-- 生成路径记录文件，包含所有原始路径信息
-- 支持手动恢复文件到原始位置
+### Backup and Recovery
+- Automatically creates timestamped backup folders.
+- Generates path record files containing all original path information.
+- Supports manual restoration of files to their original locations.
 
-### 预览功能
-- 在实际删除前预览所有操作
-- 显示文件大小和潜在节省空间
-- 按目录分组显示，便于检查
+### Preview Function
+- Preview all operations before actual deletion.
+- Displays file sizes and potential space savings.
+- Groups files by directory for easy checking.
 
-## 💡 使用建议
+## 💡 Usage Suggestions
 
-### 首次使用 (V2.0 建议)
-1. 首次选择 "github enhanced" 模式，扫描时间比较长，将建立缓存加快后续扫描。
-2. 设置置信度阈值为 80%。
-3. 启用所有相关目录。
-4. **先预览再操作**：始终使用预览模式检查结果。
-5. **小批量测试**：先选择少量文件进行测试。
-6. 仔细查看结果报告。
+### First Time Use (V2.0 Recommendation)
+1. Select "github enhanced" mode for the first scan. It will take longer but will build a cache to speed up subsequent scans.
+2. Set the confidence threshold to 80%.
+3. Enable all relevant directories.
+4. **Preview Before Operating**: Always use preview mode to check results.
+5. **Test with Small Batches**: Start by selecting a small number of files for testing.
+6. Carefully review the results report.
 
-### 日常维护 (V2.0 建议)
-1. 通常可使用缓存以加快速度
-2. 如需全面扫描，可打开clean_cache选项
-3. 根据经验调整置信度阈值。
-4. **备份重要模型**：对重要模型使用备份模式。
+### Routine Maintenance (V2.0 Recommendation)
+1. Cache can usually be used to speed things up.
+2. For a full scan, enable the `clean_cache` option.
+3. Adjust the confidence threshold based on experience.
+4. **Backup Important Models**: Use backup mode for important models.
 
-### 深度分析 (V2.0 建议)
-1. 启用 "GitHub Enhanced" 模式。
-2. 包含所有目录类型。
-3. 设置较低的置信度阈值。
-4. 手动验证不确定的结果。
+### In-depth Analysis (V2.0 Recommendation)
+1. Enable "GitHub Enhanced" mode.
+2. Include all directory types.
+3. Set a lower confidence threshold.
+4. Manually verify uncertain results.
 
-## 🌐 国际化 (多语言支持)
+## 🌐 Internationalization (Multi-language Support)
 
-ComfyModelCleaner 目前支持以下语言：
+ComfyModelCleaner currently supports the following languages:
 
--   **English (en)** - 默认语言
--   **中文 (zh)** - 简体中文
+-   **English (en)** - Default language
+-   **中文 (zh)** - Simplified Chinese
 
-**语言设置如何工作:**
+**How Language Settings Work:**
 
-1.  **自动检测**: 插件会尝试自动检测您在 ComfyUI 中设置的界面语言。它通过读取 ComfyUI 的用户配置文件 (`ComfyUI/user/default/comfy.settings.json`) 中的 `Comfy.Locale` 设置来实现。
-    -   例如，如果您的 ComfyUI 设置为中文，并且此配置文件中 `Comfy.Locale` 为 `"zh"` 或 `"zh-CN"`，ComfyModelCleaner 将在下次 ComfyUI **重启后**自动切换到中文界面。
-2.  **环境变量回退**: 如果从配置文件中读取语言设置失败，插件会尝试读取 `COMFYUI_LANG` 操作系统环境变量 (例如，设置为 `zh` 或 `en`)。
-3.  **默认语言**: 如果以上两种方法都未能确定语言，插件将默认使用英文界面。
+1.  **Automatic Detection**: The plugin attempts to automatically detect the interface language you have set in ComfyUI. It does this by reading the `Comfy.Locale` setting in ComfyUI's user configuration file (`ComfyUI/user/default/comfy.settings.json`).
+    -   For example, if your ComfyUI is set to Chinese and `Comfy.Locale` in this configuration file is `"zh"` or `"zh-CN"`, ComfyModelCleaner will automatically switch to the Chinese interface after the next ComfyUI **restart**.
+2.  **Environment Variable Fallback**: If reading the language setting from the configuration file fails, the plugin will try to read the `COMFYUI_LANG` operating system environment variable (e.g., set to `zh` or `en`).
+3.  **Default Language**: If neither of the above methods determines the language, the plugin will default to the English interface.
 
-**贡献翻译:**
+**Contributing Translations:**
 
-如果您希望为 ComfyModelCleaner 贡献其他语言的翻译，我们非常欢迎！您可以通过以下方式进行：
-1.  在 `translations` 目录下，复制现有的 `en.json` 或 `zh.json` 文件，并将其重命名为您的目标语言代码 (例如 `ja.json` 代表日语, `ko.json` 代表韩语)。
-2.  翻译新 JSON 文件中的所有字符串。
-3.  在 `core/i18n.py` 文件中的 `LANGUAGES` 字典里添加您的语言代码和对应的 JSON 文件名。
-4.  提交一个 Pull Request 并附上您的更改。
+We warmly welcome contributions for other languages to ComfyModelCleaner! You can do so in the following ways:
+1.  In the `translations` directory, copy an existing `en.json` or `zh.json` file and rename it to your target language code (e.g., `ja.json` for Japanese, `ko.json` for Korean).
+2.  Translate all the strings in the new JSON file.
+3.  Add your language code and corresponding JSON file name to the `LANGUAGES` dictionary in the `core/i18n.py` file.
+4.  Submit a Pull Request with your changes.
 
-## 🔧 故障排除
+## 🔧 Troubleshooting
 
-### 常见问题
+### Common Issues
 
-**扫描器没有找到未使用的模型**
-- 降低置信度阈值到30-50%
-- 确保选择了正确的模型类型
-- 清除缓存后重新扫描
+**Scanner did not find unused models**
+- Lower the confidence threshold to 30-50%.
+- Ensure the correct model types are selected.
+- Clear the cache and rescan.
 
-**模型被错误标记为未使用**
-- 检查是否有新安装的自定义节点使用了这些模型
-- 在删除前手动验证模型用途
-- 检查是否有动态加载或外部引用的情况
+**Models incorrectly marked as unused**
+- Check if newly installed custom nodes are using these models.
+- Manually verify model usage before deletion.
+- Check for dynamic loading or external references.
 
-**清理操作失败**
-- 检查文件权限，确保有写入权限
-- 确保设置备份文件夹绝对路径
-- 验证模型文件当前没有被ComfyUI使用
+**Cleanup operation failed**
+- Check file permissions, ensure write access.
+- Ensure the backup folder absolute path is set.
+- Verify that model files are not currently in use by ComfyUI.
 
-**节点内界面无响应**
-- 刷新浏览器页面
-- 重启ComfyUI
-- 检查浏览器控制台是否有错误信息
+**In-node interface unresponsive**
+- Refresh the browser page.
+- Restart ComfyUI.
+- Check the browser console for error messages.
 
-**Q: 扫描速度很慢 (V2.0)**
-A: 尝试关闭GitHub分析，或使用normal模式，检查clean_cache选项没有开启以使用缓存模式。确保没有选择过多不必要的目录。
+**Q: Scan is very slow (V2.0)**
+A: Try disabling GitHub analysis or use normal mode. Ensure the `clean_cache` option is not enabled to use cache mode. Make sure not too many unnecessary directories are selected.
 
-**Q: 结果不准确 (V2.0)**
-A: 由于删除节点而导致的"孤儿模型"，确实难以精确判断，筛查复杂而困难，此扫描仅提供参考，务必手动验证结果！
+**Q: Results are inaccurate (V2.0)**
+A: "Orphan models" caused by deleting nodes are indeed difficult to accurately identify. Screening is complex and challenging. This scan only provides a reference; always manually verify the results!
 
-**Q: 找不到某些模型 (V2.0)**
-A: 确保相关目录已启用，检查模型文件扩展名是否被ComfyUI或相关节点正确识别。
+**Q: Some models are not found (V2.0)**
+A: Ensure relevant directories are enabled. Check if model file extensions are correctly recognized by ComfyUI or related nodes.
 
-**Q: 误报太多 (V2.0)**
-A: 提高置信度阈值，使用更保守的设置。优先处理"未使用置信度等级"高的模型。
+**Q: Too many false positives (V2.0)**
+A: Increase the confidence threshold, use more conservative settings. Prioritize models with high "unused confidence levels."
 
-### 调试信息 (V2.0 新增)
-- 查看ComfyUI控制台输出的详细日志。
-- 检查扫描配置是否正确。
-- 验证ComfyUI目录结构。
+### Debug Information (V2.0 New)
+- Check the detailed logs output in the ComfyUI console.
+- Verify the scan configuration is correct.
+- Validate the ComfyUI directory structure.
 
 
-## 📊 示例工作流
+## 📊 Example Workflow
 
 ```
 [Model Scanner] → [show_text](scan report) →[Interactive Model Cleaner] → [show_text](clean report) 
                 →[unused_models_list]→
 ```
 
-1. Model Scanner分析所有模型,接show_text节点显示扫描报告，注意输出端要接intercative_model_cleaner节点的scan_report输入端,否则无法在工作流完成前显示扫描结果
-2. 将unused_models_list输出连接到Interactive Model Cleaner
-3. 在清理器节点中选择要删除的模型
-4. 选择操作模式并执行清理
+1. Model Scanner analyzes all models. Connect a `show_text` node to display the scan report. Note that the output must be connected to the `scan_report` input of the `Interactive Model Cleaner` node, otherwise the scan result cannot be displayed before the workflow completes.
+2. Connect the `unused_models_list` output to the Interactive Model Cleaner.
+3. Select models to delete in the cleaner node.
+4. Choose an operation mode and execute cleanup.
 
-## 🤝 贡献
+## 🤝 Contributing
 
-欢迎贡献代码！请随时提交Pull Request。也欢迎通过Issue反馈问题和建议。
+Contributions are welcome! Please feel free to submit Pull Requests. Feedback and suggestions via Issues are also welcome.
 
-## 📄 许可证
+## 📄 License
 
-本项目采用MIT许可证 - 详见LICENSE文件。
+This project is licensed under the MIT License - see the LICENSE file for details.
 
-## ⚠️ 免责声明
+## ⚠️ Disclaimer
 
-此工具会修改您的模型文件。使用前请务必备份重要数据。作者不对任何数据丢失负责。
+This tool modifies your model files. Always back up important data before use. The author is not responsible for any data loss.
 
 ---
 
-**享受更智能的模型管理体验！** 🎉
+**Enjoy a smarter model management experience!** 🎉 
