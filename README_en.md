@@ -6,6 +6,7 @@ When exploring and using various custom nodes, ComfyUI users often encounter a c
 
 ## 📣 Notice
 
+Scanning and detection are based on a comprehensive judgment of multiple factors, so accuracy cannot be guaranteed. Please operate with caution.
 
 ## 🌟 Main Features
 
