@@ -126,6 +126,24 @@ class ModelScannerNode:
             current_comfyui_lang = os.environ.get('COMFYUI_LANG', i18n.current_language) # Get current lang or keep existing
             i18n.set_language(current_comfyui_lang)
 
+            # Fix for issue #4: Validate confidence_threshold type to prevent range_iterator errors
+            if not isinstance(confidence_threshold, (int, float)):
+                try:
+                    print(f"ModelCleaner Warning: confidence_threshold received {type(confidence_threshold)}, attempting conversion.")
+                    # If it's a range or iterator, try to take the first element or a reasonable default
+                    if hasattr(confidence_threshold, '__iter__') and not isinstance(confidence_threshold, (str, bytes)):
+                         # Try to convert the first item if iterable
+                         temp_list = list(confidence_threshold)
+                         if temp_list:
+                             confidence_threshold = int(temp_list[0])
+                         else:
+                             confidence_threshold = 70
+                    else:
+                        confidence_threshold = int(confidence_threshold)
+                except Exception as e:
+                    print(f"ModelCleaner Warning: Failed to convert confidence_threshold: {e}. Using default 70.")
+                    confidence_threshold = 70
+
             print(get_t("scanner_node.scan_start_log"))
 
             # 清除缓存（如果用户选择）
